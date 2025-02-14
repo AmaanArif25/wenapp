@@ -1,91 +1,127 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import cv2
-import tensorflow as tf
 from PIL import Image
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-def load_model():
-    """Load your trained deep learning model for image prediction."""
-    model = tf.keras.models.load_model("oral_cancer_model_optimized.h5")
-    return model
+# Set the page config
+st.set_page_config(page_title="MUKTA Oral Cancer Detection", layout="wide")
 
-def predict_cancer(params):
-    """Simple logic-based prediction based on family history."""
-    return "Cancer Detected" if params["Family_History"] == 1 else "No Cancer Detected"
+# Load Mukta Logo
+mukta_logo = "mukta_logo.png"  # Make sure this file exists in the same directory
+st.sidebar.image(mukta_logo, width=200)
 
-def predict_image(image):
-    """Process image and use CNN model for prediction."""
-    model = load_model()
-    image = image.resize((224, 224))
-    image = np.array(image) / 255.0
-    image = np.expand_dims(image, axis=0)
-    prediction = model.predict(image)
-    return "Cancer Detected" if prediction[0][0] > 0.5 else "No Cancer Detected"
+# Navigation
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["About Oral Cancer", "Oral Cancer Prediction", "Image Upload", "Halitosis Detection", "Final Results"])
 
-def predict_halitosis(params):
-    """Example rule-based prediction for halitosis detection."""
-    return "Halitosis Detected" if params["H2S_ppb"] > 100 else "No Halitosis Detected"
+# 1st Interface: Oral Cancer Awareness
+if page == "About Oral Cancer":
+    st.title("Oral Cancer Awareness")
+    
+    # Add a relevant image
+    st.image("https://www.cancer.gov/sites/g/files/xnrzdm211/files/styles/cgov_article/public/cgov_image/media_image/160960_main.png", caption="Oral Cancer Awareness", use_column_width=True)
+    
+    # Add Detailed Information
+    st.write("""
+    ### What is Oral Cancer?
+    Oral cancer refers to cancer that develops in the tissues of the mouth or throat. It is part of a group of cancers called head and neck cancers.
+    
+    ### Risk Factors:
+    - Tobacco Use (Smoking & Chewing)
+    - Excessive Alcohol Consumption
+    - Poor Oral Hygiene
+    - HPV Infection
+    - Betel Nut Chewing
+    
+    ### Symptoms:
+    - Persistent sores or ulcers in the mouth
+    - Pain or difficulty swallowing
+    - White or red patches in the mouth
+    - Swelling in the jaw
+    
+    Early detection and prevention are key to successful treatment.
+    """)
 
-st.set_page_config(page_title="Oral Cancer Prediction", layout="wide")
-st.image("mukta_logo.png", width=150)  # Mukta Logo
-st.title("Oral Cancer Prediction System")
+# 2nd Interface: Oral Cancer Prediction Based on Parameters
+elif page == "Oral Cancer Prediction":
+    st.title("Oral Cancer Prediction")
 
-menu = ["Oral Cancer Awareness", "Oral Cancer Prediction", "Image-Based Prediction", "Halitosis Detection", "Final Analysis"]
-choice = st.sidebar.selectbox("Select Interface", menu)
+    # User Input Fields
+    country = st.selectbox("Country", ["India", "USA", "UK", "Other"])
+    gender = st.selectbox("Gender", ["Male", "Female", "Other"])
+    age = st.number_input("Age", min_value=1, max_value=100)
+    tobacco_use = st.selectbox("Tobacco Use", [0, 1])
+    alcohol_use = st.selectbox("Alcohol Use", [0, 1])
+    socioeconomic_status = st.selectbox("Socioeconomic Status", ["Low", "Medium", "High"])
+    diagnosis_stage = st.selectbox("Diagnosis Stage", ["Early", "Mid", "Late"])
+    treatment_type = st.selectbox("Treatment Type", ["Surgery", "Radiation", "Chemotherapy", "Combination"])
+    survival_rate = st.slider("Survival Rate (%)", min_value=0, max_value=100)
+    hpv_related = st.selectbox("HPV Related", [0, 1])
+    smoking = st.selectbox("Smoking", [0, 1])
+    poor_oral_hygiene = st.selectbox("Poor Oral Hygiene", [0, 1])
+    betel_nut_use = st.selectbox("Betel Nut Use", [0, 1])
+    oral_symptoms = st.text_area("Describe Any Symptoms")
+    family_history = st.selectbox("Family History of Cancer", [0, 1])
 
-if choice == "Oral Cancer Awareness":
-    st.header("Oral Cancer Awareness")
-    st.write("Oral cancer is a major public health concern worldwide. Early detection is crucial!")
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Oral_cancer_2.jpg/800px-Oral_cancer_2.jpg")
-    st.subheader("Key Facts")
-    st.write("- Risk factors: Tobacco, Alcohol, Poor Oral Hygiene, HPV infection.")
-    st.write("- Symptoms: Mouth sores, difficulty in chewing, white or red patches.")
-    st.write("- Prevention: Regular check-ups, quitting tobacco, maintaining oral hygiene.")
+    if st.button("Predict"):
+        if family_history == 1:
+            st.error("Warning: High risk of Oral Cancer! Consult a doctor immediately.")
+        else:
+            st.success("No immediate risk detected. Maintain good oral hygiene.")
 
-elif choice == "Oral Cancer Prediction":
-    st.header("Oral Cancer Prediction Based on Parameters")
-    params = {}
-    params["Family_History"] = st.selectbox("Family History of Cancer", [0, 1])
-    params["Age"] = st.number_input("Age", 10, 100)
-    params["Tobacco_Use"] = st.selectbox("Tobacco Use", ["Yes", "No"])
-    params["Alcohol_Use"] = st.selectbox("Alcohol Use", ["Yes", "No"])
-    params["Smoking"] = st.selectbox("Smoking", ["Yes", "No"])
-    if st.button("Predict Cancer"):
-        prediction = predict_cancer(params)
-        st.success(prediction)
+# 3rd Interface: Image Upload
+elif page == "Image Upload":
+    st.title("Upload Oral Cavity Image for Analysis")
 
-elif choice == "Image-Based Prediction":
-    st.header("Upload an Image for Oral Cancer Prediction")
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
+    uploaded_file = st.file_uploader("Upload an Image", type=["jpg", "png", "jpeg"])
+    
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        st.image(image, caption="Uploaded Image.", use_column_width=True)
-        if st.button("Predict from Image"):
-            prediction = predict_image(image)
-            st.success(prediction)
+        st.image(image, caption="Uploaded Image", use_column_width=True)
+        st.success("Image uploaded successfully. (Note: No AI analysis yet)")
 
-elif choice == "Halitosis Detection":
-    st.header("Halitosis Detection")
-    params = {}
-    params["H2S_ppb"] = st.number_input("H2S Level (ppb)", 0, 500)
-    params["CH3SH_ppb"] = st.number_input("CH3SH Level (ppb)", 0, 500)
-    params["VSC_ppb"] = st.number_input("VSC Level (ppb)", 0, 500)
-    params["Tongue_Coating_Score"] = st.number_input("Tongue Coating Score", 0, 10)
-    if st.button("Detect Halitosis"):
-        prediction = predict_halitosis(params)
-        st.success(prediction)
+# 4th Interface: Halitosis Detection
+elif page == "Halitosis Detection":
+    st.title("Halitosis (Bad Breath) Detection")
 
-elif choice == "Final Analysis":
-    st.header("Final Prediction and Recommendations")
-    cancer_prediction = predict_cancer({"Family_History": 1})  # Replace with actual data
-    halitosis_prediction = predict_halitosis({"H2S_ppb": 200})  # Replace with actual data
-    st.write(f"### Cancer Prediction: {cancer_prediction}")
-    st.write(f"### Halitosis Detection: {halitosis_prediction}")
-    st.image("https://upload.wikimedia.org/wikipedia/commons/6/6c/Oral_cancer_stages.jpg")
-    st.subheader("Precautions and Next Steps")
-    st.write("- Visit a doctor if symptoms persist.")
-    st.write("- Maintain oral hygiene.")
-    st.write("- Quit smoking and avoid tobacco.")
+    age = st.number_input("Age", min_value=1, max_value=100)
+    sex = st.selectbox("Sex", ["Male", "Female", "Other"])
+    groups = st.selectbox("Groups", ["Group 1", "Group 2", "Group 3"])
+    h2s_ppb = st.number_input("H2S Concentration (ppb)", min_value=0.0)
+    ch3sh_ppb = st.number_input("CH3SH Concentration (ppb)", min_value=0.0)
+    vsc_ppb = st.number_input("VSC Concentration (ppb)", min_value=0.0)
+    tongue_coating = st.slider("Tongue Coating Score", min_value=0, max_value=10)
+    ratio_ppb = st.number_input("Ratio ppb", min_value=0.0)
+
+    if st.button("Predict Halitosis"):
+        st.info("Prediction feature not implemented in demo.")
+
+# 5th Interface: Final Results & Recommendations
+elif page == "Final Results":
+    st.title("Final Prediction Results")
+
+    st.subheader("Prediction Summary")
+    
+    # Display result based on family history
+    if "family_history" in locals() and family_history == 1:
+        st.error("You have a high risk of Oral Cancer. Immediate consultation with a specialist is recommended.")
+    else:
+        st.success("You do not appear to have Oral Cancer based on family history.")
+
+    # Display Uploaded Image
+    if "uploaded_file" in locals() and uploaded_file is not None:
+        st.image(image, caption="Uploaded Oral Image", use_column_width=True)
+
+    # Recommendations
+    st.subheader("Precautions & Recommendations")
+    st.write("""
+    - Avoid tobacco and alcohol
+    - Maintain good oral hygiene
+    - Regular dental check-ups
+    - Eat a healthy, balanced diet
+    - Stay hydrated
+    
+    If you experience persistent symptoms, consult a healthcare professional.
+    """)
+
+    # Add a relevant image
+    st.image("https://www.cdc.gov/oralhealth/images/OralCancer-1200x675.jpg", use_column_width=True)
