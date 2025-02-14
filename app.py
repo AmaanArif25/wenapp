@@ -84,12 +84,7 @@ elif page == "Halitosis Detection":
 
     age = st.number_input("Age", min_value=1, max_value=100)
     sex = st.selectbox("Sex", ["Male", "Female", "Other"])
-    groups = st.selectbox("Groups", ["Group 1", "Group 2", "Group 3"])
     h2s_ppb = st.number_input("H2S Concentration (ppb)", min_value=0.0)
-    ch3sh_ppb = st.number_input("CH3SH Concentration (ppb)", min_value=0.0)
-    vsc_ppb = st.number_input("VSC Concentration (ppb)", min_value=0.0)
-    tongue_coating = st.slider("Tongue Coating Score", min_value=0, max_value=10)
-    ratio_ppb = st.number_input("Ratio ppb", min_value=0.0)
 
     if st.button("Proceed to Final Prediction"):
         st.success("Move to the final step!")
