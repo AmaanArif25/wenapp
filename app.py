@@ -14,7 +14,7 @@ st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["About Oral Cancer- Home", "Oral Cancer Risk Assessment", "Oral Cavity Image for Analysis", "Halitosis Detection", "Final Prediction"])
 
 # 1st Interface: Oral Cancer Awareness
-if page == "About Oral Cancer- Hom":
+if page == "About Oral Cancer- Home":
     st.title("Understanding Oral Cancer")
     
     # Add a relevant image
