@@ -3,7 +3,7 @@ import pandas as pd
 from PIL import Image
 
 # Set the page config
-st.set_page_config(page_title="MUKTA Oral Cancer Detection", , page_icon="🦷", layout="wide")
+st.set_page_config(page_title="MUKTA Oral Cancer Detection", page_icon="🦷", layout="wide")
 
 # Load Mukta Logo
 mukta_logo = "mukta_logo.png"  # Make sure this file exists in the same directory
