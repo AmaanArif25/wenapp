@@ -9,7 +9,7 @@ import seaborn as sns
 
 def load_model():
     """Load your trained deep learning model for image prediction."""
-    model = tf.keras.models.load_model("oral_cancer_model.h5")  # Replace with your model file
+    model = tf.keras.models.load_model("oral_cancer_model_optimized.h5")
     return model
 
 def predict_cancer(params):
