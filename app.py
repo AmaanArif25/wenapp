@@ -124,3 +124,12 @@ elif page == "Final Prediction":
 
     # Add a relevant image
     st.image("MHCN_Oral cavity_infographic.jpg", use_container_width=True)
+
+# Hide Streamlit's default menu and footer
+hide_streamlit_style = """
+    <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
