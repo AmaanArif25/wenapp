@@ -6,3 +6,4 @@ tensorflow
 Pillow
 matplotlib
 seaborn
+opencv-python-headless
