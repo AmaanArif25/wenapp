@@ -11,7 +11,7 @@ st.sidebar.image(mukta_logo, width=200)
 
 # Navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["About Oral Cancer", "Oral Cancer Prediction", "Image Upload", "Halitosis Detection", "Final Results"])
+page = st.sidebar.radio("Go to", ["About Oral Cancer", "Oral Cancer Prediction", "Oral Cavity Image for Analysis", "Halitosis Detection", "Final Results"])
 
 # 1st Interface: Oral Cancer Awareness
 if page == "About Oral Cancer":
@@ -62,14 +62,9 @@ elif page == "Oral Cancer Prediction":
     oral_symptoms = st.text_area("Describe Any Symptoms")
     family_history = st.selectbox("Family History of Cancer", [0, 1])
 
-    if st.button("Predict"):
-        if family_history == 1:
-            st.error("Warning: High risk of Oral Cancer! Consult a doctor immediately.")
-        else:
-            st.success("No immediate risk detected. Maintain good oral hygiene.")
 
 # 3rd Interface: Image Upload
-elif page == "Image Upload":
+elif page == "Oral Cavity Image for Analysis":
     st.title("Upload Oral Cavity Image for Analysis")
 
     uploaded_file = st.file_uploader("Upload an Image", type=["jpg", "png", "jpeg"])
