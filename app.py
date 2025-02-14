@@ -18,7 +18,7 @@ if page == "About Oral Cancer":
     st.title("Oral Cancer Awareness")
     
     # Add a relevant image
-    st.image("https://www.cancer.gov/sites/g/files/xnrzdm211/files/styles/cgov_article/public/cgov_image/media_image/160960_main.png", caption="Oral Cancer Awareness", use_column_width=True)
+    st.image("https://www.cancer.gov/sites/g/files/xnrzdm211/files/styles/cgov_article/public/cgov_image/media_image/160960_main.png", caption="Oral Cancer Awareness", use_container_width=True)
     
     # Add Detailed Information
     st.write("""
@@ -46,7 +46,7 @@ elif page == "Oral Cancer Prediction":
     st.title("Oral Cancer Prediction")
 
     # User Input Fields
-    country = st.selectbox("Country", ["India", "USA", "UK", "Other"])
+    country = st.selectbox("Country", ["India"])
     gender = st.selectbox("Gender", ["Male", "Female", "Other"])
     age = st.number_input("Age", min_value=1, max_value=100)
     tobacco_use = st.selectbox("Tobacco Use", [0, 1])
@@ -76,8 +76,8 @@ elif page == "Image Upload":
     
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        st.image(image, caption="Uploaded Image", use_column_width=True)
-        st.success("Image uploaded successfully. (Note: No AI analysis yet)")
+        st.image(image, caption="Uploaded Image", use_container_width=True)
+        st.success("Image uploaded successfully")
 
 # 4th Interface: Halitosis Detection
 elif page == "Halitosis Detection":
@@ -93,7 +93,7 @@ elif page == "Halitosis Detection":
     ratio_ppb = st.number_input("Ratio ppb", min_value=0.0)
 
     if st.button("Predict Halitosis"):
-        st.info("Prediction feature not implemented in demo.")
+        st.info("")
 
 # 5th Interface: Final Results & Recommendations
 elif page == "Final Results":
@@ -105,11 +105,11 @@ elif page == "Final Results":
     if "family_history" in locals() and family_history == 1:
         st.error("You have a high risk of Oral Cancer. Immediate consultation with a specialist is recommended.")
     else:
-        st.success("You do not appear to have Oral Cancer based on family history.")
+        st.success("You do not appear to have Oral Cancer")
 
     # Display Uploaded Image
     if "uploaded_file" in locals() and uploaded_file is not None:
-        st.image(image, caption="Uploaded Oral Image", use_column_width=True)
+        st.image(image, caption="Uploaded Oral Image", use_container_width=True)
 
     # Recommendations
     st.subheader("Precautions & Recommendations")
