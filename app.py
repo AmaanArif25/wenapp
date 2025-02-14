@@ -95,7 +95,7 @@ elif page == "Halitosis Detection":
         st.success("Move to the final step!")
 
 # 5th Interface: Final Results & Recommendations
-elif page == "Final Results":
+elif page == "Final Prediction":
     st.title("Final Cancer Prediction")
 
     family_history = st.session_state.get("family_history", 0)
