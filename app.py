@@ -42,7 +42,7 @@ if page == "About Oral Cancer":
     """)
 
 # 2nd Interface: Oral Cancer Prediction Based on Parameters
-elif page == "Oral Cancer Prediction":
+elif page == "Oral Cancer Prediction using Multi-Parametric Data Analysis":
     st.title("Oral Cancer Prediction")
 
     # User Input Fields
@@ -61,6 +61,8 @@ elif page == "Oral Cancer Prediction":
     betel_nut_use = st.selectbox("Betel Nut Use", [0, 1])
     oral_symptoms = st.text_area("Describe Any Symptoms")
     family_history = st.selectbox("Family History of Cancer", [0, 1])
+    if st.button("Predict"):
+        st.info("")
 
 
 # 3rd Interface: Image Upload
@@ -75,7 +77,7 @@ elif page == "Oral Cavity Image for Analysis":
         st.success("Image uploaded successfully")
 
 # 4th Interface: Halitosis Detection
-elif page == "Halitosis Detection":
+elif page == "Oral Cancer Prediction using Halitosis data":
     st.title("Halitosis (Bad Breath) Detection")
 
     age = st.number_input("Age", min_value=1, max_value=100)
@@ -87,7 +89,7 @@ elif page == "Halitosis Detection":
     tongue_coating = st.slider("Tongue Coating Score", min_value=0, max_value=10)
     ratio_ppb = st.number_input("Ratio ppb", min_value=0.0)
 
-    if st.button("Predict Halitosis"):
+    if st.button("Predict"):
         st.info("")
 
 # 5th Interface: Final Results & Recommendations
