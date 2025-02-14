@@ -101,7 +101,7 @@ elif page == "Final Prediction":
     family_history = st.session_state.get("family_history", 0)
     uploaded_image = st.session_state.get("uploaded_image", None)
     
-    if family_history == 1:
+    if family_history == "Yes":
         st.error("The model suggests a HIGH RISK of Oral Cancer. Please consult a doctor immediately.")
     else:
         st.success("The model suggests LOW RISK of Oral Cancer. Stay cautious and maintain good oral hygiene.")
