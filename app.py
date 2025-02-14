@@ -3,7 +3,7 @@ import pandas as pd
 from PIL import Image
 
 # Set the page config
-st.set_page_config(page_title="MUKTA Oral Cancer Detection", layout="wide")
+st.set_page_config(page_title="MUKTA Oral Cancer Detection", , page_icon="🦷", layout="wide")
 
 # Load Mukta Logo
 mukta_logo = "mukta_logo.png"  # Make sure this file exists in the same directory
@@ -11,14 +11,14 @@ st.sidebar.image(mukta_logo, width=200)
 
 # Navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["About Oral Cancer", "Oral Cancer Prediction", "Oral Cavity Image for Analysis", "Halitosis Detection", "Final Results"])
+page = st.sidebar.radio("Go to", ["About Oral Cancer- Home", "Oral Cancer Risk Assessment", "Oral Cavity Image for Analysis", "Halitosis Detection", "Final Prediction"])
 
 # 1st Interface: Oral Cancer Awareness
-if page == "About Oral Cancer":
-    st.title("Oral Cancer Awareness")
+if page == "About Oral Cancer- Hom":
+    st.title("Understanding Oral Cancer")
     
     # Add a relevant image
-    st.image("https://www.cancer.gov/sites/g/files/xnrzdm211/files/styles/cgov_article/public/cgov_image/media_image/160960_main.png", caption="Oral Cancer Awareness", use_container_width=True)
+    st.image("oralcancerimage.png", caption="Oral Cancer Awareness", use_container_width=True)
     
     # Add Detailed Information
     st.write("""
@@ -42,27 +42,26 @@ if page == "About Oral Cancer":
     """)
 
 # 2nd Interface: Oral Cancer Prediction Based on Parameters
-elif page == "Oral Cancer Prediction using Multi-Parametric Data Analysis":
-    st.title("Oral Cancer Prediction")
+elif page == "Oral Cancer Risk Assessment":
+    st.title("Oral Cancer Prediction using Multi-Parametric Data Analysis")
 
     # User Input Fields
-    country = st.selectbox("Country", ["India"])
+    country = st.text_input("Location")
     gender = st.selectbox("Gender", ["Male", "Female", "Other"])
     age = st.number_input("Age", min_value=1, max_value=100)
-    tobacco_use = st.selectbox("Tobacco Use", [0, 1])
-    alcohol_use = st.selectbox("Alcohol Use", [0, 1])
+    tobacco_use = st.selectbox("Tobacco Use", ["Yes", "No"])
+    alcohol_use = st.selectbox("Alcohol Use", ["Yes", "No"])
     socioeconomic_status = st.selectbox("Socioeconomic Status", ["Low", "Medium", "High"])
-    diagnosis_stage = st.selectbox("Diagnosis Stage", ["Early", "Mid", "Late"])
-    treatment_type = st.selectbox("Treatment Type", ["Surgery", "Radiation", "Chemotherapy", "Combination"])
     survival_rate = st.slider("Survival Rate (%)", min_value=0, max_value=100)
-    hpv_related = st.selectbox("HPV Related", [0, 1])
-    smoking = st.selectbox("Smoking", [0, 1])
-    poor_oral_hygiene = st.selectbox("Poor Oral Hygiene", [0, 1])
-    betel_nut_use = st.selectbox("Betel Nut Use", [0, 1])
-    oral_symptoms = st.text_area("Describe Any Symptoms")
-    family_history = st.selectbox("Family History of Cancer", [0, 1])
-    if st.button("Predict"):
-        st.info("")
+    hpv_related = st.selectbox("HPV Related", ["No", "Yes"])
+    smoking = st.selectbox("Smoking", ["No", "Yes"])
+    poor_oral_hygiene = st.selectbox("Poor Oral Hygiene", ["No", "Yes"])
+    betel_nut_use = st.selectbox("Betel Nut Use", ["No", "Yes"])
+    oral_symptoms = st.text_area("Describe Any other Symptoms present")
+    family_history = st.selectbox("Family History of Cancer", ["No", "Yes"])
+    if st.button("Predict Cancer Risk"):
+        st.session_state["family_history"] = family_history
+        st.success("Proceed to the next step!")
 
 
 # 3rd Interface: Image Upload
@@ -74,11 +73,14 @@ elif page == "Oral Cavity Image for Analysis":
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image, caption="Uploaded Image", use_container_width=True)
-        st.success("Image uploaded successfully")
+        st.session_state["uploaded_image"] = uploaded_file
+    
+    if st.button("Proceed to Halitosis Detection"):
+        st.success("Move to the next step!")
 
 # 4th Interface: Halitosis Detection
-elif page == "Oral Cancer Prediction using Halitosis data":
-    st.title("Halitosis (Bad Breath) Detection")
+elif page == "Halitosis Detection":
+    st.title("Oral Cancer Prediction using Halitosis data")
 
     age = st.number_input("Age", min_value=1, max_value=100)
     sex = st.selectbox("Sex", ["Male", "Female", "Other"])
@@ -89,24 +91,24 @@ elif page == "Oral Cancer Prediction using Halitosis data":
     tongue_coating = st.slider("Tongue Coating Score", min_value=0, max_value=10)
     ratio_ppb = st.number_input("Ratio ppb", min_value=0.0)
 
-    if st.button("Predict"):
-        st.info("")
+    if st.button("Proceed to Final Prediction"):
+        st.success("Move to the final step!")
 
 # 5th Interface: Final Results & Recommendations
 elif page == "Final Results":
-    st.title("Final Prediction Results")
+    st.title("Final Cancer Prediction")
 
-    st.subheader("Prediction Summary")
+    family_history = st.session_state.get("family_history", 0)
+    uploaded_image = st.session_state.get("uploaded_image", None)
     
-    # Display result based on family history
-    if "family_history" in locals() and family_history == 1:
-        st.error("You have a high risk of Oral Cancer. Immediate consultation with a specialist is recommended.")
+    if family_history == 1:
+        st.error("The model suggests a HIGH RISK of Oral Cancer. Please consult a doctor immediately.")
     else:
-        st.success("You do not appear to have Oral Cancer")
-
-    # Display Uploaded Image
-    if "uploaded_file" in locals() and uploaded_file is not None:
-        st.image(image, caption="Uploaded Oral Image", use_container_width=True)
+        st.success("The model suggests LOW RISK of Oral Cancer. Stay cautious and maintain good oral hygiene.")
+    
+    if uploaded_image is not None:
+        img = Image.open(uploaded_image)
+        st.image(img, caption="User Uploaded Image", use_column_width=True)
 
     # Recommendations
     st.subheader("Precautions & Recommendations")
@@ -121,4 +123,4 @@ elif page == "Final Results":
     """)
 
     # Add a relevant image
-    st.image("https://www.cdc.gov/oralhealth/images/OralCancer-1200x675.jpg", use_column_width=True)
+    st.image("MHCN_Oral cavity_infographic.jpg", use_container_width=True)
