@@ -18,7 +18,7 @@ if page == "About Oral Cancer- Home":
     st.title("Understanding Oral Cancer")
     
     # Add a relevant image
-    st.image("oralcancerimage.png", caption="Oral Cancer Awareness", use_container_width=True)
+    st.image("oralcancerimage.png", caption="Oral Cancer Awareness", use_container_width=True, width=300)
     
     # Add Detailed Information
     st.write("""
